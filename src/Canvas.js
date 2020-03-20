@@ -97,14 +97,13 @@ export default class Canvas extends React.Component {
 
         return (
             <div>
-                <button type="button" className="btn btn-primary" onClick={this.sort}>Sort</button>
-                <select className="form-control" id="algorithmSelector">
+                <button type="button" className="btn btn-primary" onClick={this.sort} style={{margin: 20}}>Sort</button>
+                <button type="button" className="btn btn-primary" onClick={this.generateRandomList} style={{margin: 20}}>Refresh</button>
+                <select className="form-control" id="algorithmSelector" style={{margin: 10, width: '50%'}}>
                     <option>Insertion Sort</option>
                     <option>Bubble Sort</option>
-                    <option>3</option>
-                    <option>4</option>
                 </select>
-                <Stage width={window.innerWidth} height={window.innerHeight}>
+                <Stage width={window.innerWidth} height={window.innerHeight} style={{margin: 20}}>
                     <Layer>
                         {
                             listLoaded ?
