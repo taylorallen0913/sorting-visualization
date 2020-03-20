@@ -33,13 +33,12 @@ export default class Canvas extends React.Component {
         });
     }
 
-    insertionSort = async(nums, delayInMs) => {
+    insertionSort = async (nums, delayInMs) => {
         for (let i = 0; i < nums.length; i++) {
             let key = nums[i];
             let j = i - 1;
-    
+
             while (j >= 0 && nums[j] > key) {
-                console.log(nums[j])
                 nums[j + 1] = nums[j];
                 j--;
             }
@@ -49,31 +48,67 @@ export default class Canvas extends React.Component {
         }
     }
 
+    bubbleSort = async (nums, delayInMs) => {
+        let n = nums.length;
+        for (let i = 0; i < n - 1; i++) {
+            for (let j = 0; j < n - i - 1; j++) {
+                if (nums[j] > nums[j + 1]) {
+                    // swap arr[j+1] and arr[i] 
+                    let temp = nums[j];
+                    nums[j] = nums[j + 1];
+                    nums[j + 1] = temp;
+                }
+            }
+            await delay(delayInMs)
+            this.forceUpdate();
+        }
+    }
+
+
+    renderList = () => {
+        const numList = this.state.list.map((num, index) =>
+            <Rect
+                x={index * 10}
+                y={20}
+                width={10}
+                height={num}
+                fill={'black'}
+            />
+        )
+        return numList;
+    }
+
     sort = () => {
-        console.log('pressed')
-        this.insertionSort(this.state.list, 100);
+        const algorithm = document.getElementById('algorithmSelector').value
+        switch (algorithm) {
+            case 'Insertion Sort':
+                this.insertionSort(this.state.list, 100);
+                break;
+            case 'Bubble Sort':
+                this.bubbleSort(this.state.list, 100);
+                break;
+            default:
+                break;
+        }
     }
 
     render() {
-        const { list, listLoaded } = this.state;
+        const { listLoaded } = this.state;
 
         return (
             <div>
-                <button onClick={this.sort}>Sort
-                </button>
+                <button type="button" className="btn btn-primary" onClick={this.sort}>Sort</button>
+                <select className="form-control" id="algorithmSelector">
+                    <option>Insertion Sort</option>
+                    <option>Bubble Sort</option>
+                    <option>3</option>
+                    <option>4</option>
+                </select>
                 <Stage width={window.innerWidth} height={window.innerHeight}>
                     <Layer>
                         {
                             listLoaded ?
-                                list.map((num, index) =>
-                                    <Rect
-                                        x={index * 10}
-                                        y={20}
-                                        width={10}
-                                        height={num}
-                                        fill={'black'}
-                                    />
-                                )
+                                this.renderList()
                                 : null
                         }
                     </Layer>
