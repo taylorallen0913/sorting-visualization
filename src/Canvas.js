@@ -53,12 +53,28 @@ export default class Canvas extends React.Component {
         for (let i = 0; i < n - 1; i++) {
             for (let j = 0; j < n - i - 1; j++) {
                 if (nums[j] > nums[j + 1]) {
-                    // swap arr[j+1] and arr[i] 
                     let temp = nums[j];
                     nums[j] = nums[j + 1];
                     nums[j + 1] = temp;
                 }
             }
+            await delay(delayInMs)
+            this.forceUpdate();
+        }
+    }
+
+    selectionSort = async (nums, delayInMs) => {
+        let n = nums.length;
+        for (let i = 0; i < n - 1; i++) {
+            let min_idx = i;
+            for (let j = i + 1; j < n; j++) {
+                if (nums[j] < nums[min_idx]) {
+                    min_idx = j;
+                }
+            }
+            let temp = nums[min_idx];
+            nums[min_idx] = nums[i];
+            nums[i] = temp;
             await delay(delayInMs)
             this.forceUpdate();
         }
@@ -87,6 +103,9 @@ export default class Canvas extends React.Component {
             case 'Bubble Sort':
                 this.bubbleSort(this.state.list, 100);
                 break;
+            case 'Selection Sort':
+                this.selectionSort(this.state.list, 100);
+                break;
             default:
                 break;
         }
@@ -97,13 +116,14 @@ export default class Canvas extends React.Component {
 
         return (
             <div>
-                <button type="button" className="btn btn-primary" onClick={this.sort} style={{margin: 20}}>Sort</button>
-                <button type="button" className="btn btn-primary" onClick={this.generateRandomList} style={{margin: 20}}>Refresh</button>
-                <select className="form-control" id="algorithmSelector" style={{margin: 10, width: '50%'}}>
+                <button type="button" className="btn btn-primary" onClick={this.sort} style={{ margin: 20 }}>Sort</button>
+                <button type="button" className="btn btn-primary" onClick={this.generateRandomList} style={{ margin: 20 }}>Refresh</button>
+                <select className="form-control" id="algorithmSelector" style={{ margin: 10, width: '50%' }}>
                     <option>Insertion Sort</option>
                     <option>Bubble Sort</option>
+                    <option>Selection Sort</option>
                 </select>
-                <Stage width={window.innerWidth} height={window.innerHeight} style={{margin: 20}}>
+                <Stage width={window.innerWidth} height={window.innerHeight} style={{ margin: 20 }}>
                     <Layer>
                         {
                             listLoaded ?
